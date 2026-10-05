@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdmin - School Administration System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .view-hidden {
+            display: none !important;
+        }
+
+        /* Custom scrollbar for tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased overflow-hidden">
+
+    <!-- VIEW 1: LOGIN -->
+    <div id="view-login" class="min-h-screen flex w-full fade-in">
+        <!-- Left Side: Form -->
+        <div class="w-full md:w-1/2 flex flex-col justify-center items-center p-8 lg:p-24 bg-white">
+            <div class="w-full max-w-md">
+                <div class="flex items-center gap-3 mb-10 text-primary-600">
+                    <i class="fas fa-graduation-cap text-4xl"></i>
+                    <span class="text-2xl font-bold tracking-tight text-slate-900">EduAdmin</span>
+                </div>
+                
+                <h1 class="text-3xl font-bold text-slate-900 mb-2">Welcome back</h1>
+                <p class="text-slate-500 mb-8">Please enter your details to sign in to your account.</p>
+
+                <form onsubmit="handleLogin(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                        <input type="email" placeholder="admin@school.edu" required
+                            class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                            value="admin@school.edu">
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-sm font-medium text-slate-700">Password</label>
+                            <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-700">Forgot password?</a>
+                        </div>
+                        <input type="password" placeholder="••••••••" required
+                            class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                            value="password123">
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded cursor-pointer">
+                        <label for="remember" class="ml-2 block text-sm text-slate-700 cursor-pointer">Remember me</label>
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 rounded-lg transition-colors duration-200 shadow-sm shadow-primary-500/30 flex justify-center items-center gap-2">
+                        <span>Sign in</span>
+                        <i class="fas fa-arrow-right text-sm"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Right Side: Illustration -->
+        <div class="hidden md:flex w-1/2 bg-primary-50 relative overflow-hidden flex-col justify-center items-center">
+            <!-- Decorative blobs -->
+            <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+            
+            <div class="relative z-10 max-w-lg text-center p-8">
+                <!-- Abstract Educational SVG -->
+                <svg class="w-full h-64 mb-8 drop-shadow-xl" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="50" y="80" width="300" height="180" rx="16" fill="white" />
+                    <rect x="50" y="80" width="300" height="40" rx="16" fill="#f1f5f9" />
+                    <circle cx="80" cy="100" r="6" fill="#cbd5e1" />
+                    <circle cx="100" cy="100" r="6" fill="#cbd5e1" />
+                    <circle cx="120" cy="100" r="6" fill="#cbd5e1" />
+                    <rect x="80" y="150" width="120" height="12" rx="6" fill="#e2e8f0" />
+                    <rect x="80" y="175" width="240" height="12" rx="6" fill="#e2e8f0" />
+                    <rect x="80" y="200" width="180" height="12" rx="6" fill="#e2e8f0" />
+                    <rect x="230" y="130" width="90" height="90" rx="12" fill="#dbeafe" />
+                    <path d="M255 175 L270 190 L300 150" stroke="#3b82f6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2 class="text-3xl font-bold text-primary-900 mb-4">Empowering Education</h2>
+                <p class="text-primary-700 text-lg">Streamline administration, enhance learning, and connect your entire school community in one place.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW 2: SECRETARY DASHBOARD (Matrículas) -->
+    <div id="view-secretary" class="view-hidden h-screen flex w-full bg-slate-50">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col hidden md:flex transition-all z-20" id="sec-sidebar">
+            <div class="h-16 flex items-center px-6 border-b border-slate-200">
+                <i class="fas fa-graduation-cap text-primary-600 text-2xl mr-3"></i>
+                <span class="text-xl font-bold text-slate-800">EduAdmin</span>
+            </div>
+            
+            <div class="p-4 flex-1 overflow-y-auto">
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 mt-2">Menu</div>
+                <nav class="space-y-1">
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-chart-pie w-5 text-center"></i>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-50 text-primary-600 transition-colors">
+                        <i class="fas fa-user-plus w-5 text-center"></i>
+                        <span class="font-medium">Enrollments</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-file-invoice-dollar w-5 text-center"></i>
+                        <span class="font-medium">Payments</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="p-4 border-t border-slate-200">
+                <button onclick="switchView('view-teacher')" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg transition-colors text-sm font-medium">
+                    <i class="fas fa-exchange-alt"></i> Switch to Teacher
+                </button>
+                <div class="mt-4 flex items-center gap-3 px-2 cursor-pointer" onclick="switchView('view-login')">
+                    <img src="https://ui-avatars.com/api/?name=Sarah+Smith&background=eff6ff&color=2563eb" alt="Profile" class="w-10 h-10 rounded-full">
+                    <div>
+                        <p class="text-sm font-medium text-slate-700">Sarah Smith</p>
+                        <p class="text-xs text-slate-500">Secretary</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+            <!-- Header -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-10">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar('sec-sidebar')" class="md:hidden text-slate-500 hover:text-slate-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-slate-800">Enrollment Management</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors relative">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="flex-1 overflow-auto p-6 lg:p-8 custom-scrollbar">
+                <div class="max-w-7xl mx-auto space-y-6">
+                    
+                    <!-- Action Bar -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="relative w-full sm:w-72">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" placeholder="Search students..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                        </div>
+                        <button onclick="showToast('Add Student form opened.')" class="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-sm shadow-primary-600/20">
+                            <i class="fas fa-plus"></i> Add New Student
+                        </button>
+                    </div>
+
+                    <!-- Data Table Card -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-sm uppercase tracking-wider">
+                                        <th class="px-6 py-4 font-medium">Student Name</th>
+                                        <th class="px-6 py-4 font-medium">Student ID</th>
+                                        <th class="px-6 py-4 font-medium">Grade</th>
+                                        <th class="px-6 py-4 font-medium">Status</th>
+                                        <th class="px-6 py-4 font-medium text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 text-sm">
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">AR</div>
+                                                <div class="font-medium text-slate-800">Alvaro Ramirez</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-slate-600">ST-2023-045</td>
+                                        <td class="px-6 py-4 text-slate-600">10th Grade</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="text-slate-400 hover:text-primary-600 transition-colors p-1"><i class="fas fa-edit"></i></button>
+                                            <button class="text-slate-400 hover:text-slate-800 transition-colors p-1 ml-2"><i class="fas fa-ellipsis-v"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xs">LM</div>
+                                                <div class="font-medium text-slate-800">Lucia Martinez</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-slate-600">ST-2023-089</td>
+                                        <td class="px-6 py-4 text-slate-600">10th Grade</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Pending Docs
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="text-slate-400 hover:text-primary-600 transition-colors p-1"><i class="fas fa-edit"></i></button>
+                                            <button class="text-slate-400 hover:text-slate-800 transition-colors p-1 ml-2"><i class="fas fa-ellipsis-v"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs">CJ</div>
+                                                <div class="font-medium text-slate-800">Carlos Jimenez</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-slate-600">ST-2022-112</td>
+                                        <td class="px-6 py-4 text-slate-600">11th Grade</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="text-slate-400 hover:text-primary-600 transition-colors p-1"><i class="fas fa-edit"></i></button>
+                                            <button class="text-slate-400 hover:text-slate-800 transition-colors p-1 ml-2"><i class="fas fa-ellipsis-v"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs">VG</div>
+                                                <div class="font-medium text-slate-800">Valeria Gomez</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-slate-600">ST-2021-004</td>
+                                        <td class="px-6 py-4 text-slate-600">12th Grade</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                                                Graduated
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button class="text-slate-400 hover:text-primary-600 transition-colors p-1"><i class="fas fa-edit"></i></button>
+                                            <button class="text-slate-400 hover:text-slate-800 transition-colors p-1 ml-2"><i class="fas fa-ellipsis-v"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="px-6 py-4 border-t border-slate-200 flex items-center justify-between bg-slate-50">
+                            <span class="text-sm text-slate-500">Showing 1 to 4 of 245 results</span>
+                            <div class="flex gap-1">
+                                <button class="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-100 bg-white">Previous</button>
+                                <button class="px-3 py-1 border border-primary-500 bg-primary-50 rounded text-sm text-primary-700 font-medium">1</button>
+                                <button class="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-100 bg-white">2</button>
+                                <button class="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-100 bg-white">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- VIEW 3: TEACHER PORTAL (Calificaciones) -->
+    <div id="view-teacher" class="view-hidden h-screen flex w-full bg-slate-50">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col hidden md:flex transition-all z-20" id="teacher-sidebar">
+            <div class="h-16 flex items-center px-6 border-b border-slate-800">
+                <i class="fas fa-book-open text-primary-400 text-2xl mr-3"></i>
+                <span class="text-xl font-bold text-white">EduAdmin</span>
+            </div>
+            
+            <div class="p-4 flex-1 overflow-y-auto">
+                <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4 mt-2">Teacher Tools</div>
+                <nav class="space-y-1">
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">
+                        <i class="fas fa-chalkboard-teacher w-5 text-center"></i>
+                        <span class="font-medium">My Classes</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-colors">
+                        <i class="fas fa-calendar-check w-5 text-center"></i>
+                        <span class="font-medium">Attendance</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600 text-white transition-colors">
+                        <i class="fas fa-star w-5 text-center"></i>
+                        <span class="font-medium">Gradebook</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="p-4 border-t border-slate-800">
+                <button onclick="switchView('view-secretary')" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white text-slate-900 hover:bg-slate-100 rounded-lg transition-colors text-sm font-medium">
+                    <i class="fas fa-exchange-alt"></i> Switch to Secretary
+                </button>
+                <div class="mt-4 flex items-center gap-3 px-2 cursor-pointer" onclick="switchView('view-login')">
+                    <img src="https://ui-avatars.com/api/?name=Prof.+Gomez&background=3b82f6&color=fff" alt="Profile" class="w-10 h-10 rounded-full">
+                    <div>
+                        <p class="text-sm font-medium text-white">Prof. Gomez</p>
+                        <p class="text-xs text-slate-400">Mathematics Dept.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+            <!-- Header -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-10 shadow-sm">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar('teacher-sidebar')" class="md:hidden text-slate-500 hover:text-slate-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl font-semibold text-slate-800">Gradebook</h2>
+                        <p class="text-xs text-slate-500">Class: 10th Grade Advanced Calculus</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="flex-1 overflow-auto p-6 lg:p-8 custom-scrollbar">
+                <div class="max-w-7xl mx-auto space-y-6">
+                    
+                    <!-- Top Actions & Filters -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex flex-wrap gap-3">
+                            <select class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                <option>Semester 1</option>
+                                <option>Semester 2</option>
+                            </select>
+                            <select class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                <option>Unit 1: Derivatives</option>
+                                <option>Unit 2: Integrals</option>
+                            </select>
+                        </div>
+                        <button onclick="saveGrades()" class="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fas fa-save"></i> Save Grades
+                        </button>
+                    </div>
+
+                    <!-- Gradebook Table -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto custom-scrollbar pb-4">
+                            <table class="w-full text-left border-collapse min-w-[600px]">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-sm font-semibold">
+                                        <th class="px-6 py-4 w-1/3">Student Name</th>
+                                        <th class="px-4 py-4 text-center">Quiz 1 <br><span class="text-xs font-normal text-slate-400">20%</span></th>
+                                        <th class="px-4 py-4 text-center">Midterm <br><span class="text-xs font-normal text-slate-400">30%</span></th>
+                                        <th class="px-4 py-4 text-center">Project <br><span class="text-xs font-normal text-slate-400">20%</span></th>
+                                        <th class="px-4 py-4 text-center">Final <br><span class="text-xs font-normal text-slate-400">30%</span></th>
+                                        <th class="px-6 py-4 text-center border-l border-slate-200 bg-slate-100">Average</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-sm">
+                                    <!-- Row 1 -->
+                                    <tr class="hover:bg-slate-50 transition-colors group">
+                                        <td class="px-6 py-3 font-medium text-slate-800">Alvaro Ramirez</td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="85" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="92" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="88" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="90" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-6 py-3 text-center border-l border-slate-200 font-bold text-slate-800 bg-slate-50">
+                                            89.2
+                                        </td>
+                                    </tr>
+                                    <!-- Row 2 -->
+                                    <tr class="hover:bg-slate-50 transition-colors group">
+                                        <td class="px-6 py-3 font-medium text-slate-800">Lucia Martinez</td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="78" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="82" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="85" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="" placeholder="-" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-6 py-3 text-center border-l border-slate-200 font-bold text-slate-400 bg-slate-50">
+                                            Pending
+                                        </td>
+                                    </tr>
+                                    <!-- Row 3 -->
+                                    <tr class="hover:bg-slate-50 transition-colors group">
+                                        <td class="px-6 py-3 font-medium text-slate-800">Carlos Jimenez</td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="95" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="88" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="92" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <input type="number" min="0" max="100" value="96" class="w-16 border border-slate-300 rounded px-2 py-1.5 text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none grade-input">
+                                        </td>
+                                        <td class="px-6 py-3 text-center border-l border-slate-200 font-bold text-slate-800 bg-slate-50">
+                                            92.6
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-800 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50">
+        <i class="fas fa-check-circle text-green-400"></i>
+        <span id="toast-message" class="font-medium">Action successful.</span>
+    </div>
+
+    <script>
+        // Store view elements
+        const views = {
+            'view-login': document.getElementById('view-login'),
+            'view-secretary': document.getElementById('view-secretary'),
+            'view-teacher': document.getElementById('view-teacher')
+        };
+
+        // Switch between major application views
+        function switchView(targetViewId) {
+            // Hide all views
+            Object.values(views).forEach(view => {
+                view.classList.add('view-hidden');
+                view.classList.remove('fade-in');
+            });
+
+            // Show target view
+            const target = views[targetViewId];
+            if (target) {
+                target.classList.remove('view-hidden');
+                // Trigger reflow to restart animation
+                void target.offsetWidth;
+                target.classList.add('fade-in');
+            }
+        }
+
+        // Handle Login Submission
+        function handleLogin(event) {
+            event.preventDefault();
+            // Simulate authentication processing
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+            btn.classList.add('opacity-80');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('opacity-80');
+                showToast('Login successful. Redirecting...');
+                
+                // Route user based on mock persona 
+                // Normally this depends on the role, we will default to secretary
+                setTimeout(() => switchView('view-secretary'), 600);
+            }, 800);
+        }
+
+        // Handle Save Grades button
+        function saveGrades() {
+            showToast('Grades have been saved successfully.');
+        }
+
+        // Custom UI Toast function
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Toggle Sidebar on mobile
+        function toggleSidebar(sidebarId) {
+            const sidebar = document.getElementById(sidebarId);
+            sidebar.classList.toggle('hidden');
+            if (!sidebar.classList.contains('hidden')) {
+                sidebar.classList.add('absolute', 'h-full', 'z-50', 'shadow-2xl');
+            } else {
+                sidebar.classList.remove('absolute', 'h-full', 'z-50', 'shadow-2xl');
+            }
+        }
+
+        // Prevent negative values or values > 100 in grade inputs
+        document.querySelectorAll('.grade-input').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value !== '') {
+                    let val = parseInt(this.value);
+                    if (val < 0) this.value = 0;
+                    if (val > 100) this.value = 100;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
